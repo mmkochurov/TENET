@@ -1,5 +1,4 @@
 import re
-import yaml
 from pathlib import Path
 
 import pandas as pd
@@ -12,8 +11,10 @@ st.set_page_config(page_title="Воронка продаж Chery", layout="wide"
 
 # ============ АВТОРИЗАЦИЯ ============
 try:
-    config = st.secrets["auth"]           # Streamlit Cloud
+    config = st.secrets["auth"]  # Этот вариант будет использоваться на Streamlit Cloud
 except Exception:
+    # Этот блок сработает только локально, если вы захотите запустить приложение у себя
+    import yaml
     with open("auth.yaml", encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
