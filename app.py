@@ -43,7 +43,7 @@ authenticator = stauth.Authenticate(
     config["cookie"]["expiry_days"],
 )
 
-name, auth_status, username = authenticator.login("Вход в дашборд", "main")
+name, auth_status, username = authenticator.login(location="main")
 
 if auth_status is False:
     st.error("Неверный логин или пароль")
