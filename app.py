@@ -43,7 +43,12 @@ authenticator = stauth.Authenticate(
     config["cookie"]["expiry_days"],
 )
 
-name, auth_status, username = authenticator.login(location="main")
+authenticator.login(location="main")
+
+# 2. Забираем результаты из session_state
+name = st.session_state.get("name")
+auth_status = st.session_state.get("authentication_status")
+username = st.session_state.get("username")
 
 if auth_status is False:
     st.error("Неверный логин или пароль")
