@@ -11,13 +11,31 @@ st.set_page_config(page_title="Воронка продаж Chery", layout="wide"
 
 # ============ АВТОРИЗАЦИЯ ============
 try:
-    config = st.secrets["auth"]  # Этот вариант будет использоваться на Streamlit Cloud
+    # Получаем секреты
+    raw_config = st.secrets["auth"]
+    
+    # Ключевое изменение: преобразуем AttrDict в обычный dict
+    # для credentials и всех вложенных словарей пользователей
+    credentials = {
+        "usernames": {
+            username: dict(user_data)
+            for username, user_data in raw_config["credentials"]["usernames"].items()
+        }
+    }
+    
+    # Собираем итоговый конфиг в виде обычного словаря
+    config = {
+        "credentials": credentials,
+        "cookie": dict(raw_config["cookie"]),
+        "preauthorized": dict(raw_config.get("preauthorized", {})),
+    }
+
 except Exception:
-    # Этот блок сработает только локально, если вы захотите запустить приложение у себя
-    import yaml
+    # Локальный запуск из auth.yaml (там уже обычный dict, конвертация не нужна)
     with open("auth.yaml", encoding="utf-8") as f:
         config = yaml.safe_load(f)
 
+# Теперь config — это обычный словарь, и Authenticate сможет в него писать
 authenticator = stauth.Authenticate(
     config["credentials"],
     config["cookie"]["name"],
