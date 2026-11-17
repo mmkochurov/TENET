@@ -41,7 +41,6 @@ authenticator = stauth.Authenticate(
     config["cookie"]["name"],
     config["cookie"]["key"],
     config["cookie"]["expiry_days"],
-    config.get("preauthorized"),
 )
 
 name, auth_status, username = authenticator.login("Вход в дашборд", "main")
